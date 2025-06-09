@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Count app",
+    "version": "1.0",
+    "description": "Count app",
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/counter16w.png",
+            "48": "images/counter48w.png",
+            "128": "images/counter128w.png"
+        }
+    },
+    "permissions": ["activeTab", "clipboardRead", "clipboardWrite"],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ]
+}
