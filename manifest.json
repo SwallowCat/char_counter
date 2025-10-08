@@ -11,7 +11,7 @@
             "128": "images/counter128w.png"
         }
     },
-    "permissions": ["activeTab", "clipboardRead", "clipboardWrite"],
+    "permissions": ["activeTab", "clipboardRead", "clipboardWrite", "storage"],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
