@@ -11,11 +11,20 @@
             "128": "images/counter128w.png"
         }
     },
+    "icons": {
+        "16": "images/counter16w.png",
+        "48": "images/counter48w.png",
+        "128": "images/counter128w.png"
+    },
     "permissions": ["activeTab", "clipboardRead", "clipboardWrite", "storage"],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'none';"
+    },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "js": ["content.js"]
+            "matches": ["https://example.com/*"],
+            "js": ["content.js"],
+            "run_at": "document_end"
         }
     ]
 }
