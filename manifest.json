@@ -4,7 +4,6 @@
     "version": "1.0",
     "description": "Count app",
     "action": {
-        "default_popup": "popup.html",
         "default_icon": {
             "16": "images/counter16w.png",
             "48": "images/counter48w.png",
@@ -16,7 +15,10 @@
         "48": "images/counter48w.png",
         "128": "images/counter128w.png"
     },
-    "permissions": ["activeTab", "clipboardRead", "clipboardWrite", "storage"],
+    "permissions": ["activeTab", "clipboardRead", "clipboardWrite", "storage", "contextMenus"],
+    "background": {
+        "service_worker": "background.js"
+    },
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'none';"
     },
