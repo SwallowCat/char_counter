@@ -234,3 +234,217 @@ textarea {
     margin-top: 1px !important;
 }
 
+.settings-button {
+    background-color: #9e9e9e !important;
+    border-color: #757575 !important;
+    border-bottom-color: #616161 !important;
+    color: white !important;
+    padding: 4px 8px !important;
+    font-size: 16px !important;
+    margin-right: 5px !important;
+}
+
+.settings-button:hover {
+    background-color: #757575 !important;
+    border-bottom-color: #616161 !important;
+}
+
+/* モーダルスタイル */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.setting-group {
+    margin-bottom: 25px;
+}
+
+.setting-group h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-group label, .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.radio-group label:hover, .checkbox-label:hover {
+    background-color: #f5f5f5;
+}
+
+.radio-group input, .checkbox-label input {
+    margin-right: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+/* ポップアップモード専用スタイル */
+.popup-mode body {
+    width: 400px;
+    height: 500px;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.popup-mode .container {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-mode h1 {
+    font-size: 1.2rem;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.popup-mode textarea {
+    flex: 1;
+    min-height: 150px;
+    font-size: 12px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.popup-mode .button-container {
+    margin: 5px 0;
+    flex-wrap: wrap;
+}
+
+.popup-mode .left-buttons, .popup-mode .right-buttons {
+    gap: 3px;
+}
+
+.popup-mode .btn {
+    font-size: 10px;
+    padding: 4px 8px;
+}
+
+.popup-mode #result {
+    font-size: 1.2rem;
+    margin: 5px 0;
+    padding: 8px;
+}
+
+.popup-mode #historySection {
+    height: 120px;
+    margin-top: 10px;
+    padding: 8px;
+}
+
+.popup-mode #historySection h2 {
+    font-size: 1.0rem;
+}
+
+.popup-mode .history-header {
+    margin-bottom: 5px;
+}
+
+.popup-mode .history-item {
+    margin: 2px 0;
+    padding: 5px;
+}
+
+.popup-mode .history-text {
+    font-size: 0.8rem;
+    max-width: 200px;
+}
+
+.popup-mode .history-info {
+    font-size: 0.7rem;
+}
+
+.popup-mode .delete-button {
+    min-width: 16px;
+    height: 16px;
+    font-size: 10px;
+    padding: 0;
+}
+
+.popup-mode .settings-button {
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+/* ポップアップモードでは設定モーダルを調整 */
+.popup-mode .modal-content {
+    width: 350px;
+    margin: 2% auto;
+}
+
+.popup-mode .modal-header, .popup-mode .modal-body, .popup-mode .modal-footer {
+    padding: 15px;
+}
+

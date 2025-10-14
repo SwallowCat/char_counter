@@ -15,16 +15,16 @@
         "48": "images/counter48w.png",
         "128": "images/counter128w.png"
     },
-    "permissions": ["activeTab", "clipboardRead", "clipboardWrite", "storage", "contextMenus"],
+    "permissions": ["activeTab", "tabs", "clipboardRead", "clipboardWrite", "storage", "contextMenus", "scripting"],
     "background": {
         "service_worker": "background.js"
     },
     "content_security_policy": {
-        "extension_pages": "script-src 'self'; object-src 'self'; frame-src 'none';"
+        "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'none';"
     },
     "content_scripts": [
         {
-            "matches": ["https://example.com/*"],
+            "matches": ["<all_urls>"],
             "js": ["content.js"],
             "run_at": "document_end"
         }

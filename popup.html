@@ -18,6 +18,7 @@
                     <button id="pasteButton" class="btn">Paste</button>
                 </div>
                 <div class="right-buttons">
+                    <button id="settingsButton" class="btn settings-button">⚙️</button>
                     <button id="saveButton" class="btn save-button">Save</button>
                 </div>
             </div>
@@ -29,6 +30,40 @@
                     <button id="clearHistoryButton" class="btn clear-history">履歴をクリア</button>
                 </div>
                 <div id="historyList"></div>
+            </div>
+        </div>
+
+        <!-- 設定モーダル -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>設定</h2>
+                    <button id="closeModal" class="close-button">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <h3>アイコンクリック時の動作</h3>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="openMode" value="popup" id="popupMode">
+                                <span>ポップアップで開く</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="openMode" value="window" id="windowMode">
+                                <span>新しいウィンドウで開く</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="openMode" value="tab" id="tabMode">
+                                <span>新しいタブで開く</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                          <div class="modal-buttons">
+            <button type="button" id="saveSettingsBtn">保存</button>
+            <button type="button" id="cancelSettingsBtn">キャンセル</button>
+            <button type="button" id="debugStatusBtn" style="background: #666; margin-left: 10px;">デバッグ情報</button>
+          </div>
             </div>
         </div>
     </body>
