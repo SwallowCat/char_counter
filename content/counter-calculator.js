@@ -70,4 +70,9 @@
     console.log('✅ counter-calculator.js functions registered:', ['calculateCounts', 'updateCountDisplay', 'handleTextChange']);
     console.log('🔍 handleTextChange available:', typeof global.handleTextChange === 'function');
     
+    // 関数の登録を確実にするために少し遅延後に再確認
+    setTimeout(() => {
+        console.log('🔍 Double-check - handleTextChange available:', typeof global.handleTextChange === 'function');
+    }, 10);
+    
 })(window.CounterExtension = window.CounterExtension || {});

@@ -217,18 +217,39 @@
         return handleMessage(message, sender, sendResponse);
     });
     
+    // モジュールの読み込み完了を待つ関数
+    function waitForModules(callback, maxAttempts = 20, attempt = 0) {
+        const requiredFunctions = ['showInteractiveCounterOnPage', 'loadInteractiveCounterTemplate', 'handleTextChange'];
+        const missingFunctions = requiredFunctions.filter(fn => !window.CounterExtension?.[fn]);
+        
+        if (missingFunctions.length === 0) {
+            console.log('✅ All modules loaded successfully');
+            callback();
+            return;
+        }
+        
+        if (attempt >= maxAttempts) {
+            console.error('❌ Timeout waiting for modules to load. Missing:', missingFunctions);
+            console.error('📊 Available functions:', Object.keys(window.CounterExtension || {}));
+            setupFallbackFunctionality();
+            return;
+        }
+        
+        console.log(`⏳ Waiting for modules... Attempt ${attempt + 1}/${maxAttempts}. Missing:`, missingFunctions);
+        setTimeout(() => waitForModules(callback, maxAttempts, attempt + 1), 100);
+    }
+    
     // ドキュメントの準備完了を待ってモジュールを初期化
     function initializeWhenReady() {
         if (document.readyState === 'loading') {
             console.log('📄 Document still loading, waiting for DOMContentLoaded...');
             document.addEventListener('DOMContentLoaded', () => {
-                console.log('📄 DOMContentLoaded event fired, starting module initialization...');
-                setTimeout(initializeModules, 100); // 少し遅延を入れる
+                console.log('📄 DOMContentLoaded event fired, waiting for modules...');
+                setTimeout(() => waitForModules(initializeModules), 200);
             });
         } else {
-            console.log('📄 Document already loaded, starting module initialization immediately...');
-            // すでに読み込み完了している場合は少し遅延を入れてから実行
-            setTimeout(initializeModules, 50);
+            console.log('📄 Document already loaded, waiting for modules...');
+            setTimeout(() => waitForModules(initializeModules), 100);
         }
     }
     

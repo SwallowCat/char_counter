@@ -46,14 +46,11 @@
         // 既存のカウンターを削除
         removeInteractiveCounter();
         
-        // 新しい要素を作成
-        const counterElement = document.createElement('div');
-        counterElement.innerHTML = html;
+        // HTMLを直接bodyに挿入
+        document.body.insertAdjacentHTML('beforeend', html);
         
-        // ページに追加
-        document.body.appendChild(counterElement);
-        
-        return counterElement.firstElementChild;
+        // 挿入された要素を取得して返す
+        return document.getElementById('extension-interactive-counter');
     }
     
     // インタラクティブカウンターを削除

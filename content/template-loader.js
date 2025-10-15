@@ -98,4 +98,9 @@
     console.log('✅ template-loader.js functions registered:', ['loadInteractiveCounterTemplate']);
     console.log('🔍 loadInteractiveCounterTemplate available:', typeof global.loadInteractiveCounterTemplate === 'function');
     
+    // 関数の登録を確実にするために少し遅延後に再確認
+    setTimeout(() => {
+        console.log('🔍 Double-check - loadInteractiveCounterTemplate available:', typeof global.loadInteractiveCounterTemplate === 'function');
+    }, 10);
+    
 })(window.CounterExtension = window.CounterExtension || {});

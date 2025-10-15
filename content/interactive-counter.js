@@ -11,6 +11,18 @@
         console.log('🎮 showInteractiveCounterOnPage called with initialText:', initialText.substring(0, 50));
         
         try {
+            // 依存関数の確認
+            if (!global.removeInteractiveCounter || !global.loadSettings || !global.loadInteractiveCounterTemplate || !global.showInteractiveCounter || !global.handleTextChange) {
+                console.error('❌ Required dependencies not available:', {
+                    removeInteractiveCounter: !!global.removeInteractiveCounter,
+                    loadSettings: !!global.loadSettings,
+                    loadInteractiveCounterTemplate: !!global.loadInteractiveCounterTemplate,
+                    showInteractiveCounter: !!global.showInteractiveCounter,
+                    handleTextChange: !!global.handleTextChange
+                });
+                throw new Error('Required dependencies not available');
+            }
+            
             // 既存のカウンターを削除
             global.removeInteractiveCounter();
             
@@ -45,6 +57,7 @@
             }
         } catch (error) {
             console.error('❌ Error in showInteractiveCounterOnPage:', error);
+            throw error;
         }
     }
     
@@ -69,8 +82,6 @@
         const settingsToggle = interactiveCounterElement.querySelector('#settingsToggle');
         const settingsSection = interactiveCounterElement.querySelector('#settingsSection');
         const openModeSelect = interactiveCounterElement.querySelector('#openModeSelect');
-        const saveSettingsBtn = interactiveCounterElement.querySelector('#saveSettingsButton');
-        const cancelSettingsBtn = interactiveCounterElement.querySelector('#cancelSettingsButton');
         
         // テキストエリアの変更イベント
         if (inputTextarea) {
@@ -193,28 +204,52 @@
             });
         }
         
-        // 設定表示切り替え
-        if (settingsToggle && settingsSection) {
+        // 設定モーダル表示切り替え
+        if (settingsToggle) {
             settingsToggle.addEventListener('click', async () => {
-                const isVisible = settingsSection.style.display !== 'none';
-                if (isVisible) {
-                    settingsSection.style.display = 'none';
-                } else {
-                    settingsSection.style.display = 'block';
+                const settingsModal = document.getElementById('settingsModal');
+                if (settingsModal) {
+                    settingsModal.style.display = 'block';
+                    
                     // 現在の設定を表示
-                    if (openModeSelect) {
-                        openModeSelect.value = currentSettings.openMode || 'window';
+                    const popupMode = document.getElementById('popupMode');
+                    const windowMode = document.getElementById('windowMode');
+                    const tabMode = document.getElementById('tabMode');
+                    
+                    if (popupMode && windowMode && tabMode) {
+                        popupMode.checked = currentSettings.openMode === 'popup';
+                        windowMode.checked = currentSettings.openMode === 'window';
+                        tabMode.checked = currentSettings.openMode === 'tab';
                     }
                 }
             });
         }
         
+        // 設定モーダルの閉じるボタン
+        const closeModal = document.getElementById('closeModal');
+        if (closeModal) {
+            closeModal.addEventListener('click', () => {
+                const settingsModal = document.getElementById('settingsModal');
+                if (settingsModal) {
+                    settingsModal.style.display = 'none';
+                }
+            });
+        }
+        
         // 設定保存ボタン
-        if (saveSettingsBtn && openModeSelect) {
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        if (saveSettingsBtn) {
             saveSettingsBtn.addEventListener('click', async () => {
-                const newSettings = {
-                    openMode: openModeSelect.value
-                };
+                const popupMode = document.getElementById('popupMode');
+                const windowMode = document.getElementById('windowMode');
+                const tabMode = document.getElementById('tabMode');
+                
+                let openMode = 'window'; // デフォルト
+                if (popupMode && popupMode.checked) openMode = 'popup';
+                else if (windowMode && windowMode.checked) openMode = 'window';
+                else if (tabMode && tabMode.checked) openMode = 'tab';
+                
+                const newSettings = { openMode };
                 
                 const success = await global.saveSettings(newSettings);
                 if (success) {
@@ -234,8 +269,9 @@
                     saveSettingsBtn.textContent = '✓';
                     setTimeout(() => {
                         saveSettingsBtn.textContent = '保存';
-                        if (settingsSection) {
-                            settingsSection.style.display = 'none';
+                        const settingsModal = document.getElementById('settingsModal');
+                        if (settingsModal) {
+                            settingsModal.style.display = 'none';
                         }
                     }, 1000);
                 }
@@ -243,12 +279,23 @@
         }
         
         // 設定キャンセルボタン
-        if (cancelSettingsBtn && settingsSection) {
+        const cancelSettingsBtn = document.getElementById('cancelSettingsBtn');
+        if (cancelSettingsBtn) {
             cancelSettingsBtn.addEventListener('click', () => {
-                settingsSection.style.display = 'none';
-                // 元の設定に戻す
-                if (openModeSelect) {
-                    openModeSelect.value = currentSettings.openMode || 'window';
+                const settingsModal = document.getElementById('settingsModal');
+                if (settingsModal) {
+                    settingsModal.style.display = 'none';
+                }
+                
+                // 元の設定に戻す（必要に応じて）
+                const popupMode = document.getElementById('popupMode');
+                const windowMode = document.getElementById('windowMode');
+                const tabMode = document.getElementById('tabMode');
+                
+                if (popupMode && windowMode && tabMode) {
+                    popupMode.checked = currentSettings.openMode === 'popup';
+                    windowMode.checked = currentSettings.openMode === 'window';
+                    tabMode.checked = currentSettings.openMode === 'tab';
                 }
             });
         }
@@ -278,5 +325,11 @@
     
     console.log('✅ interactive-counter.js functions registered:', ['showInteractiveCounterOnPage', 'setupInteractiveCounterEvents']);
     console.log('🔍 showInteractiveCounterOnPage available:', typeof global.showInteractiveCounterOnPage === 'function');
+    
+    // 関数の登録を確実にするために少し遅延後に再確認
+    setTimeout(() => {
+        console.log('🔍 Double-check - showInteractiveCounterOnPage available:', typeof global.showInteractiveCounterOnPage === 'function');
+        console.log('🔍 All registered functions:', Object.keys(global));
+    }, 10);
     
 })(window.CounterExtension = window.CounterExtension || {});
