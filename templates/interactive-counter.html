@@ -1,0 +1,66 @@
+<!-- インタラクティブカウンターのHTMLテンプレート -->
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h1 style="margin: 0;">文字数カウント</h1>
+        <button id="close-counter" style="background: #f44336; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px;">
+            ✕
+        </button>
+    </div>
+    
+    <textarea id="textArea" rows="10" placeholder="文章を入力してください">{{initialText}}</textarea>
+    
+    <div class="button-container">
+        <div class="left-buttons">
+            <button id="clearButton" class="btn">Clear</button>
+            <button id="copyButton" class="btn">Copy</button>
+            <button id="pasteButton" class="btn">Paste</button>
+        </div>
+        <div class="right-buttons">
+            <button id="settingsButton" class="btn settings-button">⚙️</button>
+            <button id="saveButton" class="btn save-button">Save</button>
+        </div>
+    </div>
+    
+    <div id="result">result : 0</div>
+    
+    <div id="historySection">
+        <div class="history-header">
+            <h2>履歴</h2>
+            <button id="clearHistoryButton" class="btn clear-history">履歴をクリア</button>
+        </div>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<!-- 設定モーダル -->
+<div id="settingsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>設定</h2>
+            <button id="closeModal" class="close-button">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="setting-group">
+                <h3>アイコンクリック時の動作</h3>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="openMode" value="popup" id="popupMode">
+                        <span>ポップアップで開く</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="openMode" value="window" id="windowMode">
+                        <span>新しいウィンドウで開く</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="openMode" value="tab" id="tabMode">
+                        <span>新しいタブで開く</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" id="saveSettingsBtn">保存</button>
+            <button type="button" id="cancelSettingsBtn">キャンセル</button>
+        </div>
+    </div>
+</div>
