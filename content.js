@@ -52,9 +52,23 @@
         console.log('🎮 showInteractiveCounterOnPage called with initialText:', initialText.substring(0, 50));
         
         try {
-            // 既存の表示を削除
+            // 既存の表示を削除（DOM から直接削除）
             hideCounterResult();
             hideInteractiveCounter();
+            
+            // DOM に残っている可能性のある要素も直接削除
+            const existingInteractive = document.getElementById('chrome-interactive-counter');
+            if (existingInteractive && existingInteractive.parentNode) {
+                existingInteractive.parentNode.removeChild(existingInteractive);
+                console.log('🧹 Removed existing interactive counter from DOM');
+            }
+            
+            const existingResult = document.getElementById('chrome-counter-result');
+            if (existingResult && existingResult.parentNode) {
+                existingResult.parentNode.removeChild(existingResult);
+                console.log('🧹 Removed existing result counter from DOM');
+            }
+            
             console.log('🧹 Previous displays cleared');
             
             // インタラクティブカウンター要素を作成
@@ -231,10 +245,17 @@
     
     // インタラクティブカウンターを非表示にする
     function hideInteractiveCounter() {
+        // 変数から削除を試みる
         if (interactiveCounterElement && interactiveCounterElement.parentNode) {
             interactiveCounterElement.parentNode.removeChild(interactiveCounterElement);
             interactiveCounterElement = null;
             console.log('🙈 Interactive counter hidden');
+        }
+        // DOM から直接削除も試みる（変数が失われている場合に備えて）
+        const existingElement = document.getElementById('chrome-interactive-counter');
+        if (existingElement && existingElement.parentNode) {
+            existingElement.parentNode.removeChild(existingElement);
+            console.log('🙈 Interactive counter removed from DOM directly');
         }
     }
     
@@ -245,6 +266,21 @@
         try {
             // 既存の結果表示を削除
             hideCounterResult();
+            hideInteractiveCounter();
+            
+            // DOM に残っている可能性のある要素も直接削除
+            const existingResult = document.getElementById('chrome-counter-result');
+            if (existingResult && existingResult.parentNode) {
+                existingResult.parentNode.removeChild(existingResult);
+                console.log('🧹 Removed existing result counter from DOM');
+            }
+            
+            const existingInteractive = document.getElementById('chrome-interactive-counter');
+            if (existingInteractive && existingInteractive.parentNode) {
+                existingInteractive.parentNode.removeChild(existingInteractive);
+                console.log('🧹 Removed existing interactive counter from DOM');
+            }
+            
             console.log('🧹 Previous result cleared');
             
             // 結果表示用の要素を作成
@@ -327,9 +363,16 @@
     
     // 結果表示を非表示にする
     function hideCounterResult() {
+        // 変数から削除を試みる
         if (counterResultElement && counterResultElement.parentNode) {
             counterResultElement.parentNode.removeChild(counterResultElement);
             counterResultElement = null;
+        }
+        // DOM から直接削除も試みる（変数が失われている場合に備えて）
+        const existingElement = document.getElementById('chrome-counter-result');
+        if (existingElement && existingElement.parentNode) {
+            existingElement.parentNode.removeChild(existingElement);
+            console.log('🙈 Counter result removed from DOM directly');
         }
     }
 
