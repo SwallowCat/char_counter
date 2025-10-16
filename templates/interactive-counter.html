@@ -144,136 +144,6 @@
         #extension-interactive-counter .clear-history:hover {
             background: #f57c00;
         }
-        
-        /* 設定モーダルのスタイル */
-        #settingsModal {
-            display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 400px;
-            max-width: calc(100vw - 40px);
-            max-height: calc(100vh - 40px);
-            background: white;
-            border: 2px solid #2196F3;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            z-index: 10001;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            overflow-y: auto;
-        }
-        
-        #settingsModal .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        #settingsModal .modal-header h2 {
-            margin: 0;
-            color: #333;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        
-        #settingsModal .close-button {
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        #settingsModal .close-button:hover {
-            background: #d32f2f;
-        }
-        
-        #settingsModal .modal-body {
-            margin-bottom: 20px;
-        }
-        
-        #settingsModal .setting-group {
-            margin-bottom: 20px;
-        }
-        
-        #settingsModal .setting-group h3 {
-            margin: 0 0 10px 0;
-            color: #333;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        #settingsModal .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        #settingsModal .radio-group label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 4px;
-            transition: background 0.2s ease;
-        }
-        
-        #settingsModal .radio-group label:hover {
-            background: #f5f5f5;
-        }
-        
-        #settingsModal .radio-group input[type="radio"] {
-            margin-right: 8px;
-            accent-color: #2196F3;
-        }
-        
-        #settingsModal .radio-group span {
-            font-size: 14px;
-            color: #333;
-        }
-        
-        #settingsModal .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-        }
-        
-        #settingsModal .modal-buttons button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        
-        #settingsModal #saveSettingsBtn {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        #settingsModal #saveSettingsBtn:hover {
-            background: #45a049;
-        }
-        
-        #settingsModal #cancelSettingsBtn {
-            background: #f5f5f5;
-            color: #333;
-        }
-        
-        #settingsModal #cancelSettingsBtn:hover {
-            background: #e0e0e0;
-        }
     </style>
     
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -319,34 +189,131 @@
 </div>
 
 <!-- 設定モーダル -->
-<div id="settingsModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>設定</h2>
-            <button id="closeModal" class="close-button">×</button>
+<div id="settingsModal" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 400px;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+    background: white;
+    border: 2px solid #2196F3;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 10001;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-y: auto;
+">
+    <div style="
+        width: 100%;
+    ">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        ">
+            <h2 style="margin: 0; color: #333; font-size: 20px; font-weight: bold;">設定</h2>
+            <button id="closeModal" style="
+                background: #f44336;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 6px 12px;
+                cursor: pointer;
+                font-size: 14px;
+            ">×</button>
         </div>
-        <div class="modal-body">
-            <div class="setting-group">
-                <h3>アイコンクリック時の動作</h3>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="openMode" value="popup" id="popupMode">
-                        <span>ポップアップで開く</span>
+        
+        <div style="margin-bottom: 20px;">
+            <div style="margin-bottom: 20px;">
+                <h3 style="
+                    margin: 0 0 10px 0;
+                    color: #333;
+                    font-size: 16px;
+                    font-weight: 600;
+                ">アイコンクリック時の動作</h3>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        padding: 8px;
+                        border-radius: 4px;
+                        transition: background 0.2s ease;
+                    " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">
+                        <input type="radio" name="openMode" value="popup" id="popupMode" style="
+                            margin-right: 8px;
+                            accent-color: #2196F3;
+                        ">
+                        <span style="font-size: 14px; color: #333;">ポップアップで開く</span>
                     </label>
-                    <label>
-                        <input type="radio" name="openMode" value="window" id="windowMode">
-                        <span>新しいウィンドウで開く</span>
+                    <label style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        padding: 8px;
+                        border-radius: 4px;
+                        transition: background 0.2s ease;
+                    " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">
+                        <input type="radio" name="openMode" value="window" id="windowMode" style="
+                            margin-right: 8px;
+                            accent-color: #2196F3;
+                        ">
+                        <span style="font-size: 14px; color: #333;">新しいウィンドウで開く</span>
                     </label>
-                    <label>
-                        <input type="radio" name="openMode" value="tab" id="tabMode">
-                        <span>新しいタブで開く</span>
+                    <label style="
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        padding: 8px;
+                        border-radius: 4px;
+                        transition: background 0.2s ease;
+                    " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">
+                        <input type="radio" name="openMode" value="tab" id="tabMode" style="
+                            margin-right: 8px;
+                            accent-color: #2196F3;
+                        ">
+                        <span style="font-size: 14px; color: #333;">新しいタブで開く</span>
                     </label>
                 </div>
             </div>
         </div>
-        <div class="modal-buttons">
-            <button type="button" id="saveSettingsBtn">保存</button>
-            <button type="button" id="cancelSettingsBtn">キャンセル</button>
+        
+        <div style="
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        ">
+            <button id="saveSettingsBtn" style="
+                padding: 8px 16px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                background: #4CAF50;
+                color: white;
+            " onmouseover="this.style.background='#45a049'" onmouseout="this.style.background='#4CAF50'">保存</button>
+            <button id="cancelSettingsBtn" style="
+                padding: 8px 16px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                background: #f5f5f5;
+                color: #333;
+            " onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f5f5f5'">キャンセル</button>
         </div>
     </div>
 </div>

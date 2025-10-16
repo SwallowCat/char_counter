@@ -236,6 +236,16 @@
             });
         }
         
+        // モーダル背景クリックで閉じる
+        const settingsModal = document.getElementById('settingsModal');
+        if (settingsModal) {
+            settingsModal.addEventListener('click', (e) => {
+                if (e.target === settingsModal) {
+                    settingsModal.style.display = 'none';
+                }
+            });
+        }
+        
         // 設定保存ボタン
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         if (saveSettingsBtn) {
@@ -287,7 +297,7 @@
                     settingsModal.style.display = 'none';
                 }
                 
-                // 元の設定に戻す（必要に応じて）
+                // 元の設定に戻す
                 const popupMode = document.getElementById('popupMode');
                 const windowMode = document.getElementById('windowMode');
                 const tabMode = document.getElementById('tabMode');

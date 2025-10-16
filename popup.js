@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('closeModal').addEventListener('click', closeSettings);
     document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
     document.getElementById('cancelSettingsBtn').addEventListener('click', closeSettings);
+    document.getElementById('historyToggle').addEventListener('click', toggleHistory);
     
     // デバッグ情報ボタン
     document.getElementById('debugStatusBtn').addEventListener('click', async function() {
@@ -87,9 +88,43 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function countCharacters() {
-    var text = document.getElementById('textArea').value.replace(/\s+/g, '');
-    var count = text.length;
-    document.getElementById('result').innerText = 'Character count: ' + count;
+    var text = document.getElementById('textArea').value;
+    
+    // 基本的な文字数カウント
+    var charCount = text.length;
+    var charCountNoSpaces = text.replace(/\s/g, '').length;
+    
+    // 単語数カウント（日本語と英語の両方に対応）
+    var wordCount = 0;
+    if (text.trim()) {
+        // 英語の単語（空白区切り）
+        var englishWords = text.match(/[a-zA-Z]+/g) || [];
+        // 日本語の文字（ひらがな、カタカナ、漢字）
+        var japaneseChars = text.match(/[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/g) || [];
+        // 数字
+        var numbers = text.match(/\d+/g) || [];
+        
+        wordCount = englishWords.length + japaneseChars.length + numbers.length;
+    }
+    
+    // 行数カウント
+    var lineCount = text ? text.split('\n').length : 0;
+    
+    // 段落数カウント（空行で区切られたブロック）
+    var paragraphCount = text ? text.split(/\n\s*\n/).filter(function(p) { return p.trim().length > 0; }).length : 0;
+    
+    // 結果を表示
+    var charCountEl = document.getElementById('charCount');
+    var charCountNoSpacesEl = document.getElementById('charCountNoSpaces');
+    var wordCountEl = document.getElementById('wordCount');
+    var lineCountEl = document.getElementById('lineCount');
+    var paragraphCountEl = document.getElementById('paragraphCount');
+    
+    if (charCountEl) charCountEl.textContent = charCount.toLocaleString();
+    if (charCountNoSpacesEl) charCountNoSpacesEl.textContent = charCountNoSpaces.toLocaleString();
+    if (wordCountEl) wordCountEl.textContent = wordCount.toLocaleString();
+    if (lineCountEl) lineCountEl.textContent = lineCount.toLocaleString();
+    if (paragraphCountEl) paragraphCountEl.textContent = paragraphCount.toLocaleString();
   }
 
   function copyToClipboard() {
@@ -113,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function clearText() {
     document.getElementById('textArea').value = '';
-    document.getElementById('result').innerText = 'result : 0';
+    countCharacters();
   }
 
   function saveToHistory() {
@@ -134,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var history = result.textHistory || [];
       var now = new Date();
       var timestamp = now.toLocaleString('ja-JP');
-      var charCount = text.replace(/\s+/g, '').length;
+      var charCount = text.length;
 
       var historyItem = {
         text: text,
@@ -277,6 +312,21 @@ document.addEventListener('DOMContentLoaded', function() {
           loadHistory();
         }
       });
+    }
+  }
+
+  // 履歴表示切り替え関数
+  function toggleHistory() {
+    var historySection = document.getElementById('historySection');
+    var historyToggle = document.getElementById('historyToggle');
+    
+    if (historySection.style.display === 'none' || historySection.style.display === '') {
+      historySection.style.display = 'block';
+      historyToggle.textContent = '履歴を非表示 ▲';
+      loadHistory(); // 履歴を更新
+    } else {
+      historySection.style.display = 'none';
+      historyToggle.textContent = '履歴を表示 ▼';
     }
   }
 
