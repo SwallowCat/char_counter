@@ -17,7 +17,7 @@
     },
     "permissions": ["activeTab", "tabs", "clipboardRead", "clipboardWrite", "storage", "contextMenus", "scripting"],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background/background.js"
     },
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline'; frame-src 'none';"
@@ -31,7 +31,7 @@
                 "content/template-loader.js",
                 "content/event-handlers.js",
                 "content/interactive-counter.js",
-                "content.js"
+                "content/content.js"
             ],
             "run_at": "document_end"
         }

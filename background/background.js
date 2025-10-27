@@ -3,10 +3,10 @@
 
 // モジュールをインポート（Service Workerではimportが使えないため、動的にスクリプトを実行）
 importScripts(
-    'background/settings.js',
-    'background/context-menu.js', 
-    'background/window-manager.js',
-    'background/content-script-manager.js'
+    'settings.js',
+    'context-menu.js', 
+    'window-manager.js',
+    'content-script-manager.js'
 );
 
 // 初期化フラグ
