@@ -39,17 +39,11 @@
     
     // カウント結果をHTMLに反映
     function updateCountDisplay(element, counts) {
-        const charCountEl = element.querySelector('#charCount');
         const charCountNoSpacesEl = element.querySelector('#charCountNoSpaces');
-        const wordCountEl = element.querySelector('#wordCount');
-        const lineCountEl = element.querySelector('#lineCount');
-        const paragraphCountEl = element.querySelector('#paragraphCount');
         
-        if (charCountEl) charCountEl.textContent = counts.charCount.toLocaleString();
-        if (charCountNoSpacesEl) charCountNoSpacesEl.textContent = counts.charCountNoSpaces.toLocaleString();
-        if (wordCountEl) wordCountEl.textContent = counts.wordCount.toLocaleString();
-        if (lineCountEl) lineCountEl.textContent = counts.lineCount.toLocaleString();
-        if (paragraphCountEl) paragraphCountEl.textContent = counts.paragraphCount.toLocaleString();
+        if (charCountNoSpacesEl) {
+            charCountNoSpacesEl.textContent = counts.charCountNoSpaces.toLocaleString();
+        }
     }
     
     // テキストエリアの値変更時のハンドラー

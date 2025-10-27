@@ -18,22 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('cancelSettingsBtn').addEventListener('click', closeSettings);
     document.getElementById('historyToggle').addEventListener('click', toggleHistory);
     
-    // デバッグ情報ボタン
-    document.getElementById('debugStatusBtn').addEventListener('click', async function() {
-      try {
-        // 現在のストレージ設定を取得
-        const result = await chrome.storage.local.get(['appSettings']);
-        const settings = result.appSettings || {};
-        
-        // バックグラウンドに現在のポップアップ状態を問い合わせ
-        chrome.runtime.sendMessage({action: 'getPopupStatus'}, function(response) {
-          alert(`設定: ${JSON.stringify(settings, null, 2)}\n\nポップアップ状態: ${response?.popupUrl || 'エラー'}`);
-        });
-      } catch (error) {
-        alert('デバッグ情報の取得に失敗: ' + error.message);
-      }
-    });
-    
     var textArea = document.getElementById('textArea');
     var copyButton = document.getElementById('copyButton');
     var pasteButton = document.getElementById('pasteButton');
@@ -113,18 +97,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 段落数カウント（空行で区切られたブロック）
     var paragraphCount = text ? text.split(/\n\s*\n/).filter(function(p) { return p.trim().length > 0; }).length : 0;
     
-    // 結果を表示
-    var charCountEl = document.getElementById('charCount');
+    // 結果を表示（空白なしの文字数のみ）
     var charCountNoSpacesEl = document.getElementById('charCountNoSpaces');
-    var wordCountEl = document.getElementById('wordCount');
-    var lineCountEl = document.getElementById('lineCount');
-    var paragraphCountEl = document.getElementById('paragraphCount');
     
-    if (charCountEl) charCountEl.textContent = charCount.toLocaleString();
-    if (charCountNoSpacesEl) charCountNoSpacesEl.textContent = charCountNoSpaces.toLocaleString();
-    if (wordCountEl) wordCountEl.textContent = wordCount.toLocaleString();
-    if (lineCountEl) lineCountEl.textContent = lineCount.toLocaleString();
-    if (paragraphCountEl) paragraphCountEl.textContent = paragraphCount.toLocaleString();
+    if (charCountNoSpacesEl) {
+        charCountNoSpacesEl.textContent = charCountNoSpaces.toLocaleString();
+    }
   }
 
   function copyToClipboard() {
