@@ -36,7 +36,7 @@ async function updateActionBehavior(settings = currentSettings) {
   try {
     if (settings.openMode === 'popup') {
       console.log('Setting popup mode - enabling popup');
-      await chrome.action.setPopup({popup: 'popup.html'});
+      await chrome.action.setPopup({popup: 'popup/templates/popup.html'});
       
       // 設定後に少し待機してから確認
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -45,13 +45,13 @@ async function updateActionBehavior(settings = currentSettings) {
       const currentPopup = await chrome.action.getPopup({});
       console.log('Popup set to:', currentPopup);
       
-      const expectedUrl = chrome.runtime.getURL('popup.html');
+      const expectedUrl = chrome.runtime.getURL('popup/templates/popup.html');
       // ポップアップが正しく設定されているか検証
       if (currentPopup !== expectedUrl) {
         console.error('Popup setting failed! Expected:', expectedUrl, 'Got:', currentPopup);
         // リトライ
         console.log('Retrying popup setting...');
-        await chrome.action.setPopup({popup: 'popup.html'});
+        await chrome.action.setPopup({popup: 'popup/templates/popup.html'});
         await new Promise(resolve => setTimeout(resolve, 50));
         const retryPopup = await chrome.action.getPopup({});
         console.log('Retry result:', retryPopup);

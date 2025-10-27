@@ -11,7 +11,7 @@ function openCounterWithCurrentSettings(initialText = '') {
         const latestSettings = result.appSettings || globalThis.currentSettings;
         console.log('Latest settings from storage:', latestSettings);
         
-        const url = chrome.runtime.getURL('popup.html') + (initialText ? `?text=${encodeURIComponent(initialText)}` : '');
+        const url = chrome.runtime.getURL('popup/templates/popup.html') + (initialText ? `?text=${encodeURIComponent(initialText)}` : '');
         console.log('Opening URL:', url);
         
         console.log('Checking openMode:', latestSettings.openMode, typeof latestSettings.openMode);

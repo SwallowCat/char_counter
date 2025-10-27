@@ -40,7 +40,8 @@
         {
             "resources": [
                 "templates/*",
-                "content/*"
+                "content/*",
+                "popup/*"
             ],
             "matches": ["<all_urls>"]
         }
