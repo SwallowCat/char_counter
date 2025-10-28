@@ -15,35 +15,50 @@ let isInitializing = true;
 
 // 設定が確実に初期化されるようにデフォルト値を設定
 if (!globalThis.currentSettings) {
-    globalThis.currentSettings = { openMode: 'window' };
+    globalThis.currentSettings = { openMode: 'popup' };
 }
 
 // アクションクリック時の処理
-chrome.action.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener(async (tab) => {
     console.log('Action clicked, current mode:', globalThis.currentSettings?.openMode || 'undefined');
     console.log('Is initializing:', isInitializing);
     
-    // 初期化中の場合は設定を再読み込みしてから処理
-    if (isInitializing) {
-        console.log('Extension is still initializing, reloading settings...');
-        chrome.storage.local.get(['appSettings'], (result) => {
-            globalThis.currentSettings = result.appSettings || globalThis.currentSettings;
-            console.log('Reloaded settings during initialization:', globalThis.currentSettings);
-            
-                        // 設定を即座に適用
-            globalThis.updateActionBehavior(globalThis.currentSettings);
-            globalThis.updateContextMenu();
+    // 初期化中または設定が未読み込みの場合は設定を再読み込みしてから処理
+    if (isInitializing || !globalThis.currentSettings) {
+        console.log('Extension is still initializing or settings not loaded, reloading settings...');
+        
+        // 設定を同期的に読み込む
+        const result = await new Promise(resolve => {
+            chrome.storage.local.get(['appSettings'], resolve);
         });
-        return;
+        
+        globalThis.currentSettings = result.appSettings || { openMode: 'popup' };
+        console.log('Reloaded settings during initialization:', globalThis.currentSettings);
+        
+        // 設定を即座に適用
+        await globalThis.updateActionBehavior(globalThis.currentSettings);
+        globalThis.updateContextMenu();
+        
+        // popupモードの場合はここで終了（ポップアップが開かれるはず）
+        if (globalThis.currentSettings.openMode === 'popup') {
+            console.log('Popup mode detected during initialization - popup should open automatically');
+            return;
+        }
     }
     
     // ポップアップモードの場合、このリスナーは呼ばれるべきではない
     if (globalThis.currentSettings?.openMode === 'popup') {
         console.error('ERROR: Action clicked in popup mode! Popup should have opened automatically.');
-        console.log('Attempting to fix popup setting...');
+        console.log('Current popup status check...');
         
-        // ポップアップ設定を再適用
-        globalThis.updateActionBehavior(globalThis.currentSettings);
+        // 現在のポップアップ設定を確認
+        const currentPopup = await chrome.action.getPopup({});
+        console.log('Current popup URL:', currentPopup);
+        
+        if (!currentPopup) {
+            console.log('Popup not set! Attempting to fix popup setting...');
+            await globalThis.updateActionBehavior(globalThis.currentSettings);
+        }
         return;
     }
 
@@ -66,7 +81,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (!globalThis.currentSettings) {
         console.log('⚠️ Settings undefined, loading from storage...');
         chrome.storage.local.get(['appSettings'], (result) => {
-            globalThis.currentSettings = result.appSettings || { openMode: 'window' };
+            globalThis.currentSettings = result.appSettings || { openMode: 'popup' };
             console.log('🔄 Settings reloaded:', globalThis.currentSettings);
             // 設定読み込み後に再度処理を実行
             processContextMenuClick(info, tab);
@@ -203,7 +218,7 @@ chrome.runtime.onInstalled.addListener(() => {
         
         if (!result.appSettings) {
             const defaultSettings = {
-                openMode: 'window'
+                openMode: 'popup'
             };
             console.log('💾 Saving default settings:', defaultSettings);
             chrome.storage.local.set({appSettings: defaultSettings}, () => {
@@ -232,14 +247,35 @@ if (typeof chrome !== 'undefined' && chrome.runtime && !initialLoadComplete) {
     console.log('Service worker initialized, loading settings...');
     initialLoadComplete = true;
     
-    // 初期化完了まで少し長めの時間を取る
-    setTimeout(() => {
-        globalThis.loadSettings();
-        // 初期化完了後にフラグをfalseに
+    // 設定を即座に読み込む
+    chrome.storage.local.get(['appSettings'], async (result) => {
+        console.log('Initial settings load result:', result);
+        
+        if (result.appSettings) {
+            globalThis.currentSettings = result.appSettings;
+            console.log('✅ Initial settings loaded:', globalThis.currentSettings);
+        } else {
+            // デフォルト設定を保存
+            const defaultSettings = { openMode: 'popup' };
+            globalThis.currentSettings = defaultSettings;
+            chrome.storage.local.set({ appSettings: defaultSettings });
+            console.log('💾 Default settings saved:', defaultSettings);
+        }
+        
+        // 設定を適用
+        try {
+            await globalThis.updateActionBehavior(globalThis.currentSettings);
+            globalThis.updateContextMenu();
+            console.log('🔧 Initial action behavior applied');
+        } catch (error) {
+            console.error('Error applying initial action behavior:', error);
+        }
+        
+        // 初期化完了
         setTimeout(() => {
             isInitializing = false;
-            console.log('Initialization completed');
+            console.log('🎉 Initialization completed');
             console.log('Final settings after initialization:', globalThis.currentSettings);
-        }, 500);
-    }, 200);
+        }, 100);
+    });
 }

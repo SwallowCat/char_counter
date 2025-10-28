@@ -320,14 +320,14 @@ document.addEventListener('DOMContentLoaded', function() {
   function loadSettings() {
     if (typeof chrome === 'undefined' || !chrome.storage) {
       // デフォルト設定を適用
-      document.getElementById('windowMode').checked = true;
+      document.getElementById('popupMode').checked = true;
       console.log('Chrome API not available, using defaults');
       return;
     }
 
     chrome.storage.local.get(['appSettings'], function(result) {
       var settings = result.appSettings || {
-        openMode: 'window'
+        openMode: 'popup'
       };
 
       console.log('Loading settings in popup:', settings);
